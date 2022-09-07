@@ -4,6 +4,7 @@ import vlc
 import time
 import sys
 import signal
+import asyncio
 
 from PyQt5 import QtWidgets, QtCore, QtGui
 from PyQt5.QtWidgets import *
@@ -34,6 +35,14 @@ channels = [
 
 class MainWindow(QtWidgets.QMainWindow):
 
+	async def update_volume(self) -> None:
+
+		await asyncio.sleep(1)
+
+		media_volume = self.media_player.audio_get_volume()
+		self.sl.setValue(media_volume)
+		self.label.setText(str(media_volume))
+
 	def render_stop_button(self) -> None:
 
 		mipmap = getattr(QtWidgets.QStyle, 'SP_MediaStop')
@@ -45,18 +54,7 @@ class MainWindow(QtWidgets.QMainWindow):
 		stop_button.resize(50, 32)
 		stop_button.move(335, 155)
 
-	def update_label(self, value: int) -> None:
-
-		self.media_player.audio_set_volume(value)
-		self.label.setText(str(value))
-
-	def __init__(self) -> None:
-
-		QtWidgets.QMainWindow.__init__(self)
-
-		self.label = QtWidgets.QLabel('25', self)
-		self.label.setMinimumWidth(80)
-		self.label.move(13, 154)
+	def render_slider(self) -> None:
 
 		self.sl = QtWidgets.QSlider(QtCore.Qt.Orientation.Horizontal, self)
 		self.sl.setMinimum(0)
@@ -67,12 +65,29 @@ class MainWindow(QtWidgets.QMainWindow):
 		self.sl.setGeometry(50, 160, 270, 30)
 		self.sl.valueChanged.connect(self.update_label)
 
-		self.media_player = vlc.MediaPlayer()
+		self.label = QtWidgets.QLabel('25', self)
+		self.label.setMinimumWidth(80)
+		self.label.move(13, 154)
+
+	def update_label(self, value: int) -> None:
+
+		self.media_player.audio_set_volume(value)
+		self.label.setText(str(value))
+
+	def __init__(self) -> None:
+
+		QtWidgets.QMainWindow.__init__(self)
 
 		self.setMinimumSize(QtCore.QSize(400, 200))
 		self.setWindowTitle("r A d I o")
 
+		self.sl = QtWidgets.QSlider(QtCore.Qt.Orientation.Horizontal, self)
+		self.label = QtWidgets.QLabel('25', self)
+
+		self.render_slider()
 		self.render_stop_button()
+
+		self.media_player = vlc.MediaPlayer()
 
 		position_y = 10
 		for channelGroups in channels:
@@ -106,8 +121,6 @@ class MainWindow(QtWidgets.QMainWindow):
 
 					return url
 
-		return ''
-
 	def play_radio(self, channel: str) -> None:
 
 		self.stop_radio()
@@ -116,13 +129,9 @@ class MainWindow(QtWidgets.QMainWindow):
 		self.media_player.set_media(media)
 		self.media_player.play()
 
-		time.sleep(1)
-
-		media_volume = self.media_player.audio_get_volume()
-		self.sl.setValue(media_volume)
-		self.update_label(media_volume)
-
 		print('selected channel: ', channel)
+
+		asyncio.run(self.update_volume())
 
 
 if __name__ == "__main__":
