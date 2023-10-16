@@ -18,15 +18,15 @@ radioplayprefix: str = '?direct=true&listenerid=undefined&aw_0_1st.bauer_listene
 
 channels = [
 	{
-		'Radio Nova': 'https://stream.bauermedia.fi/radionova/radionova_64.aac?aw_0_1st.bauer_loggedin=false&aw_0_1st.playerid=BMFI_Web&aw_0_req.gdpr=false&aw_0_req.gdpr=false&aw_0_req.gdpr=false&aw_0_1st.skey=1662587731',
-	},
-	{
-		'RadioRock': 'https://supla.digitacdn.net/live/_definst_/supla/radiorock/chunklist.m3u8',
-		'HitMix': 'https://supla.digitacdn.net/live/_definst_/supla/hitmix/playlist.m3u8',
-		'MeNaiset': 'https://supla.digitacdn.net/live/_definst_/supla/radioaalto/playlist.m3u8',
+		"YLE Puhe": "https://yleradiolive.akamaized.net/hls/live/2027677/in-YlePuhe/abr.smil/chunklist_b256000_ao.m3u8",
+		"YLE X": "https://yleradiolive.akamaized.net/hls/live/2027674/in-YleX/master.m3u8",
 	},
 	{
 		'Top51': 'https://stream.radioplay.fi/top51/top51_64.aac',
+		"Järviradio": "https://jarviradio.radiotaajuus.fi:9000/jr",
+		"Radio Helsinki": "http://77.86.233.1:8004/",
+	},
+	{
 		'SuomiRap': 'https://stream.radioplay.fi/suomirap/suomirap_64.aac',
 		'NRJ': 'https://stream.radioplay.fi/nrj/nrj_64.aac',
 	}

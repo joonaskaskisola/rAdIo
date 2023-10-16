@@ -1,0 +1,6 @@
+#!/bin/bash
+
+python -m venv .
+source bin/activate
+pip install -r requirements.txt
+python src/radio.py & disown
